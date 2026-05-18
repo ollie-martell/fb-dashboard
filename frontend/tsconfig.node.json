@@ -9,6 +9,9 @@
     "moduleDetection": "force",
     "noEmit": true,
 
+    "skipLibCheck": true,
+    "types": ["node", "vite/client"],
+
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
