@@ -327,8 +327,8 @@ function Dashboard() {
       }}
     >
       <header className={styles.header}>
-        <div style={{ fontSize: 'var(--text-13)', fontWeight: 500, letterSpacing: '0.04em' }}>
-          <span style={{ color: 'var(--text-primary)', fontWeight: 600 }}>Martell Media</span>
+        <div style={{ display: 'flex', alignItems: 'center', fontSize: 'var(--text-13)', fontWeight: 500, letterSpacing: '0.04em' }}>
+          <img src="/logo.png" alt="Martell Media" height={28} style={{ display: 'block' }} />
           <span style={{ color: 'var(--text-tertiary)', margin: '0 8px' }}>·</span>
           <span style={{ color: 'var(--text-secondary)' }}>Facebook</span>
         </div>
