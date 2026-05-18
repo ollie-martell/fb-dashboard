@@ -24,10 +24,16 @@ _cache: dict = {"rows": None, "fetched_at": 0.0}
 
 
 def _service():
-    creds = service_account.Credentials.from_service_account_file(
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"],
-        scopes=SCOPES,
-    )
+    json_str = os.environ.get("GOOGLE_CREDENTIALS_JSON")
+    if json_str:
+        import json
+        info = json.loads(json_str)
+        creds = service_account.Credentials.from_service_account_info(info, scopes=SCOPES)
+    else:
+        creds = service_account.Credentials.from_service_account_file(
+            os.environ["GOOGLE_APPLICATION_CREDENTIALS"],
+            scopes=SCOPES,
+        )
     return build("sheets", "v4", credentials=creds, cache_discovery=False)
 
 
