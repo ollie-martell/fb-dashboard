@@ -1,0 +1,140 @@
+/* ============================================================================
+ * Design Tokens — Martell Media Facebook Dashboard
+ * ----------------------------------------------------------------------------
+ * Aesthetic: warm light. Cream background, white + yellow + dark card surfaces
+ * mixed for hierarchy. Bricolage Grotesque for everything except numerics
+ * (mono). Yellow is a primary color, not a decoration.
+ *
+ * Every color, font, spacing, and radius in the app comes from this file.
+ * Hardcoded colors anywhere else in the codebase is a bug.
+ * ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400;12..96,75..100,500;12..96,75..100,600;12..96,75..100,700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  /* ── Surfaces ──────────────────────────────────────────────────────── */
+  --bg-page:           #F8F2E2;   /* cream page bg */
+  --bg-card-white:     #FFFFFF;   /* default card */
+  --bg-card-yellow:    #FFD23F;   /* featured card — "today" / hero metric */
+  --bg-card-dark:      #1A1612;   /* contrast card — target / serious */
+  --bg-subtle:         #F0E8D2;   /* subtle pill backgrounds, hover states */
+  --bg-dark-overlay:   rgba(248, 242, 226, 0.12); /* progress track on dark card */
+
+  /* ── Text ──────────────────────────────────────────────────────────── */
+  --text-primary:      #1A1612;   /* primary text on light surfaces */
+  --text-secondary:    #6B6055;   /* labels, metadata */
+  --text-tertiary:     #9A8E80;   /* timestamps, fine print */
+  --text-on-yellow:    #1A1612;   /* text on yellow cards */
+  --text-on-dark:      #F8F2E2;   /* text on dark cards */
+  --text-on-dark-dim:  #A89E92;   /* secondary text on dark cards */
+
+  /* ── Accents ──────────────────────────────────────────────────────── */
+  --accent-yellow:         #FFD23F;
+  --accent-yellow-strong:  #F5B800;   /* hover, today's bar, emphasis */
+  --accent-yellow-soft:    #FFE889;   /* light backgrounds, soft fills */
+  --accent-coral:          #F25C3D;   /* negative deltas */
+  --accent-green:          #5BAE6B;   /* positive deltas */
+  --accent-green-dark:     #2D7A3D;   /* positive delta text on light bg */
+
+  /* ── Typography ───────────────────────────────────────────────────── */
+  --font-display: 'Bricolage Grotesque', -apple-system, system-ui, sans-serif;
+  --font-body:    'Bricolage Grotesque', -apple-system, system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+
+  /* Type scale */
+  --text-xs:   11px;
+  --text-sm:   12.5px;
+  --text-13:   13px;
+  --text-base: 14px;
+  --text-md:   16px;
+  --text-lg:   18px;
+  --text-xl:   22px;
+  --text-2xl:  32px;
+
+  /* Hero number — fluid */
+  --text-hero: clamp(48px, 6vw, 78px);
+
+  /* Line heights */
+  --leading-display: 1.0;
+  --leading-tight:   1.2;
+  --leading-normal:  1.5;
+
+  /* Weights */
+  --weight-regular: 400;
+  --weight-medium:  500;
+  --weight-semi:    600;
+  --weight-bold:    700;
+
+  /* Letter spacing */
+  --tracking-display: -0.035em;
+  --tracking-normal:  0;
+  --tracking-mono:    -0.02em;
+
+  /* ── Spacing — 4px base ───────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  32px;
+  --space-8:  40px;
+  --space-9:  64px;
+
+  /* ── Radius ──────────────────────────────────────────────────────── */
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-card:  20px;   /* default card radius */
+  --radius-pill:  999px;  /* buttons, badges, progress bars */
+
+  /* ── Shadows — warm, soft ─────────────────────────────────────────── */
+  --shadow-card:        0 1px 2px rgba(26, 22, 18, 0.04), 0 4px 16px rgba(26, 22, 18, 0.06);
+  --shadow-lift:        0 2px 4px rgba(26, 22, 18, 0.06), 0 8px 24px rgba(26, 22, 18, 0.09);
+  --shadow-yellow-glow: 0 0 16px rgba(255, 210, 63, 0.35);
+  --border-subtle:      rgba(26, 22, 18, 0.08);
+
+  /* ── Motion ─────────────────────────────────────────────────────── */
+  --ease-out:        cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out:     cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast:   160ms;
+  --duration-base:   220ms;
+  --duration-slow:   600ms;
+
+  /* ── Layout ─────────────────────────────────────────────────────── */
+  --container-max: 1280px;
+}
+
+/* Base */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body { background: var(--bg-page); }
+
+body {
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  font-weight: var(--weight-regular);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 599px) {
+  :root {
+    --text-hero: clamp(40px, 12vw, 56px);
+  }
+}
+
+/* Tabular numerals on anything that should align */
+.tabular { font-variant-numeric: tabular-nums; }
+
+/* Helper for the big hero numbers — slightly condensed via wdth axis */
+.display-number {
+  font-family: var(--font-display);
+  font-weight: var(--weight-semi);
+  font-variation-settings: 'wdth' 92;
+  font-size: var(--text-hero);
+  line-height: var(--leading-display);
+  letter-spacing: var(--tracking-display);
+  font-variant-numeric: lining-nums;
+}

@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Martell Media · Facebook</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400;12..96,75..100,500;12..96,75..100,600;12..96,75..100,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Surfaces */
+    --bg-page:           #F8F2E2;
+    --bg-card-white:     #FFFFFF;
+    --bg-card-yellow:    #FFD23F;
+    --bg-card-dark:      #1A1612;
+
+    /* Text */
+    --text-primary:      #1A1612;
+    --text-secondary:    #6B6055;
+    --text-tertiary:     #9A8E80;
+    --text-on-yellow:    #1A1612;
+    --text-on-dark:      #F8F2E2;
+    --text-on-dark-dim:  #A89E92;
+
+    /* Accents */
+    --accent-yellow:        #FFD23F;
+    --accent-yellow-strong: #F5B800;
+    --accent-coral:         #F25C3D;
+    --accent-green:         #5BAE6B;
+
+    /* Layout */
+    --radius-card:  20px;
+    --radius-pill:  999px;
+    --shadow-card:  0 1px 2px rgba(26, 22, 18, 0.04), 0 4px 16px rgba(26, 22, 18, 0.06);
+    --shadow-lift:  0 2px 4px rgba(26, 22, 18, 0.06), 0 8px 24px rgba(26, 22, 18, 0.09);
+
+    /* Type */
+    --font-display: 'Bricolage Grotesque', -apple-system, system-ui, sans-serif;
+    --font-body:    'Bricolage Grotesque', -apple-system, system-ui, sans-serif;
+    --font-mono:    'JetBrains Mono', ui-monospace, monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body { background: var(--bg-page); }
+
+  body {
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    min-height: 100vh;
+  }
+
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: clamp(20px, 3vw, 36px) clamp(20px, 4vw, 56px) 64px;
+  }
+
+  /* ── Header ─────────────────────────────────────────────────────── */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: clamp(28px, 4vw, 44px);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .brand {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    color: var(--text-secondary);
+  }
+  .brand .sep { margin: 0 8px; color: var(--text-tertiary); }
+  .brand .name { color: var(--text-primary); font-weight: 600; }
+
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .updated {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-tertiary);
+    letter-spacing: 0;
+  }
+
+  .refresh-btn {
+    background: var(--bg-card-white);
+    border: 1px solid rgba(26, 22, 18, 0.08);
+    color: var(--text-primary);
+    padding: 9px 18px 10px;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-pill);
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: var(--shadow-card);
+  }
+  .refresh-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-lift); }
+  .refresh-btn:active { transform: translateY(0); }
+  .refresh-btn .arrow {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+    border-top-color: transparent;
+    border-left-color: transparent;
+    transform: rotate(45deg);
+  }
+
+  /* ── Hero row ──────────────────────────────────────────────────── */
+  .hero-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: clamp(20px, 2.5vw, 28px);
+  }
+  @media (min-width: 720px) {
+    .hero-row { grid-template-columns: 1fr 1fr; }
+    .card-mtd { grid-column: 1 / -1; }
+  }
+  @media (min-width: 1000px) {
+    .hero-row { grid-template-columns: 1.05fr 1fr 1.3fr; }
+    .card-mtd { grid-column: auto; }
+  }
+
+  .card {
+    border-radius: var(--radius-card);
+    padding: 28px 30px 30px;
+    box-shadow: var(--shadow-card);
+    transition: transform 220ms ease, box-shadow 220ms ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .card:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); }
+
+  .card-yellow { background: var(--bg-card-yellow); color: var(--text-on-yellow); }
+  .card-white  { background: var(--bg-card-white);  color: var(--text-primary); }
+  .card-dark   { background: var(--bg-card-dark);   color: var(--text-on-dark); }
+
+  .card-eyebrow {
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: 14px;
+    opacity: 0.7;
+  }
+
+  .stat-number {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-variation-settings: 'wdth' 92;
+    font-size: clamp(48px, 6vw, 78px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+    margin-bottom: 14px;
+    font-variant-numeric: lining-nums;
+  }
+  .stat-number .plus { opacity: 0.55; font-weight: 500; margin-right: -2px; }
+
+  .stat-sub {
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    opacity: 0.7;
+  }
+  .stat-sub .delta {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 500;
+    padding: 2px 8px 3px;
+    border-radius: var(--radius-pill);
+    background: rgba(91, 174, 107, 0.18);
+    color: #2D7A3D;
+    margin-right: 6px;
+    letter-spacing: -0.02em;
+  }
+  .card-dark .stat-sub .delta {
+    background: rgba(91, 174, 107, 0.22);
+    color: #8FD89E;
+  }
+
+  /* MTD-specific: target + progress bar */
+  .mtd-meta {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 18px;
+    font-size: 14px;
+    color: var(--text-on-dark-dim);
+  }
+  .mtd-meta .target {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  .mtd-progress {
+    height: 6px;
+    background: rgba(248, 242, 226, 0.12);
+    border-radius: var(--radius-pill);
+    overflow: hidden;
+    margin-bottom: 14px;
+  }
+  .mtd-progress-fill {
+    height: 100%;
+    background: var(--accent-yellow);
+    border-radius: var(--radius-pill);
+    width: 57%;
+    box-shadow: 0 0 16px rgba(255, 210, 63, 0.35);
+  }
+
+  /* ── Chart section ─────────────────────────────────────────────── */
+  .chart-card {
+    background: var(--bg-card-white);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    padding: 26px 30px 22px;
+  }
+
+  .chart-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 26px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .chart-title {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: var(--text-primary);
+  }
+  .range-toggle {
+    display: flex;
+    gap: 4px;
+    background: var(--bg-page);
+    padding: 3px;
+    border-radius: var(--radius-pill);
+  }
+  .range-toggle button {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 7px 14px;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: var(--radius-pill);
+    transition: all 160ms ease;
+  }
+  .range-toggle button:hover { color: var(--text-primary); }
+  .range-toggle button.active {
+    background: var(--bg-card-white);
+    color: var(--text-primary);
+    box-shadow: 0 1px 2px rgba(26, 22, 18, 0.06);
+  }
+
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+    height: clamp(220px, 28vw, 300px);
+  }
+  .main-chart { width: 100%; height: 100%; display: block; }
+
+  /* ── Footer ────────────────────────────────────────────────────── */
+  .footer-stat {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 6px;
+    font-size: 13px;
+    color: var(--text-tertiary);
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .footer-stat .total {
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  /* ── Reveal animation ──────────────────────────────────────────── */
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    animation: reveal 600ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .d1 { animation-delay: 60ms; }
+  .d2 { animation-delay: 140ms; }
+  .d3 { animation-delay: 220ms; }
+  .d4 { animation-delay: 300ms; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header class="reveal">
+    <div class="brand">
+      <span class="name">Martell Media</span>
+      <span class="sep">·</span>
+      <span>Facebook</span>
+    </div>
+    <div class="header-right">
+      <span class="updated">Updated 15 May · 02:00 PT</span>
+      <button class="refresh-btn">
+        <span class="arrow"></span>
+        Refresh
+      </button>
+    </div>
+  </header>
+
+  <section class="hero-row">
+
+    <div class="card card-yellow reveal d1">
+      <div class="card-eyebrow">Yesterday</div>
+      <div class="stat-number"><span class="plus">+</span>4,392</div>
+      <div class="stat-sub">Wednesday, 14 May</div>
+    </div>
+
+    <div class="card card-white reveal d2">
+      <div class="card-eyebrow">Week to date</div>
+      <div class="stat-number"><span class="plus">+</span>38,114</div>
+      <div class="stat-sub">
+        <span class="delta">+12.4%</span>vs prior week
+      </div>
+    </div>
+
+    <div class="card card-dark card-mtd reveal d3">
+      <div class="card-eyebrow">Month to date</div>
+      <div class="stat-number"><span class="plus">+</span>96,172</div>
+      <div class="mtd-meta">
+        <span class="target">/ 168,000</span>
+        <span>target</span>
+      </div>
+      <div class="mtd-progress"><div class="mtd-progress-fill"></div></div>
+      <div class="stat-sub">
+        <span class="delta">+27%</span>above pace · projecting 213K
+      </div>
+    </div>
+
+  </section>
+
+  <section class="chart-card reveal d4">
+    <div class="chart-head">
+      <div class="chart-title">Daily new followers</div>
+      <div class="range-toggle">
+        <button>30D</button>
+        <button class="active">45D</button>
+        <button>All</button>
+      </div>
+    </div>
+    <div class="chart-wrap">
+      <svg class="main-chart" id="mainchart" preserveAspectRatio="none" aria-label="Daily new followers over 45 days"></svg>
+    </div>
+  </section>
+
+  <div class="footer-stat reveal d4">
+    <span>Total followers</span>
+    <span class="total">745,283</span>
+  </div>
+
+</div>
+
+<script>
+  // Anchored on Ollie's real sheet data; deterministic interpolation elsewhere.
+  const anchors = {
+    '2026-04-01':  -1,
+    '2026-04-30':   0,
+    '2026-05-01': 12501,
+    '2026-05-02': 10333,
+    '2026-05-15':  4392,
+  };
+
+  function buildDailySeries() {
+    // We're charting NEW followers per day (not cumulative).
+    // Generate a plausible 45-day series with a few standout spike days.
+    const out = [];
+    const start = new Date('2026-04-01T00:00:00Z');
+    const end   = new Date('2026-05-15T00:00:00Z');
+
+    let i = 0;
+    for (let d = new Date(start); d <= end; d.setUTCDate(d.getUTCDate() + 1)) {
+      const iso = d.toISOString().slice(0, 10);
+      if (anchors[iso] !== undefined && anchors[iso] >= 0) {
+        out.push({ date: iso, value: anchors[iso] });
+        i++;
+        continue;
+      }
+      // Base growth + variance + occasional spikes
+      const dayOfWeek = d.getUTCDay();
+      const base = 3200 + Math.sin(i * 0.32) * 800;
+      const weekend = (dayOfWeek === 0 || dayOfWeek === 6) ? -700 : 0;
+      const noise = Math.sin(i * 1.7) * 1200 + Math.cos(i * 0.8) * 600;
+      const spike = (i % 11 === 3) ? 4200 : (i % 17 === 5 ? 2800 : 0);
+      const val = Math.max(800, Math.round(base + weekend + noise + spike));
+      out.push({ date: iso, value: val });
+      i++;
+    }
+    return out;
+  }
+
+  const series = buildDailySeries();
+
+  // ── Main chart ──────────────────────────────────────────────────
+  function drawBarChart() {
+    const svg = document.getElementById('mainchart');
+    const rect = svg.getBoundingClientRect();
+    const w = rect.width || 1200;
+    const h = rect.height || 280;
+    svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+
+    const padL = 4, padR = 4, padT = 28, padB = 28;
+    const data = series;
+
+    const maxV = Math.max(...data.map(d => d.value));
+    const gap = 3;
+    const barW = Math.max(4, (w - padL - padR - gap * (data.length - 1)) / data.length);
+
+    const today = data[data.length - 1];
+
+    // Month markers
+    let lastMonth = null;
+    const monthMarkers = [];
+    data.forEach((d, idx) => {
+      const m = d.date.slice(0, 7);
+      if (m !== lastMonth) {
+        monthMarkers.push({ x: padL + idx * (barW + gap), label: new Date(d.date).toLocaleDateString('en-GB', { month: 'long', timeZone: 'UTC' }) });
+        lastMonth = m;
+      }
+    });
+
+    let html = '';
+    data.forEach((d, idx) => {
+      const x = padL + idx * (barW + gap);
+      const barH = ((h - padT - padB) * d.value) / maxV;
+      const y = h - padB - barH;
+      const isToday = idx === data.length - 1;
+      const fill = isToday ? '#F5B800' : '#FFD23F';
+      html += `<rect x="${x.toFixed(2)}" y="${y.toFixed(2)}" width="${barW.toFixed(2)}" height="${barH.toFixed(2)}" rx="3" fill="${fill}" data-date="${d.date}" data-value="${d.value}"/>`;
+    });
+
+    // Today's value label above the last bar
+    const lastX = padL + (data.length - 1) * (barW + gap) + barW / 2;
+    const lastH = ((h - padT - padB) * today.value) / maxV;
+    const lastY = h - padB - lastH;
+    html += `<text x="${lastX.toFixed(2)}" y="${(lastY - 10).toFixed(2)}" fill="#1A1612" font-family="Bricolage Grotesque, sans-serif" font-size="12" font-weight="600" text-anchor="middle">${today.value.toLocaleString('en-US')}</text>`;
+
+    // Month markers
+    monthMarkers.forEach(m => {
+      html += `<text x="${m.x.toFixed(2)}" y="${h - 8}" fill="#9A8E80" font-family="JetBrains Mono, monospace" font-size="10" letter-spacing="0.02em">${m.label}</text>`;
+    });
+
+    svg.innerHTML = html;
+  }
+
+  drawBarChart();
+
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(drawBarChart, 100);
+  });
+
+  // Toggle stub
+  document.querySelectorAll('.range-toggle button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.range-toggle button').forEach(x => x.classList.remove('active'));
+      b.classList.add('active');
+    });
+  });
+
+  // Refresh button — visual feedback only for mock
+  document.querySelector('.refresh-btn').addEventListener('click', function() {
+    const arrow = this.querySelector('.arrow');
+    arrow.style.transition = 'transform 600ms ease';
+    arrow.style.transform = 'rotate(405deg)';
+    setTimeout(() => { arrow.style.transform = 'rotate(45deg)'; }, 700);
+  });
+</script>
+</body>
+</html>

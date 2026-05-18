@@ -1,0 +1,17 @@
+.card {
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  padding: 28px 30px 30px;
+  transition: transform 220ms var(--ease-out), box-shadow 220ms var(--ease-out);
+  position: relative;
+  overflow: hidden;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+}
+
+.white  { background: var(--bg-card-white);  color: var(--text-primary);   }
+.yellow { background: var(--bg-card-yellow); color: var(--text-on-yellow); }
+.dark   { background: var(--bg-card-dark);   color: var(--text-on-dark);   }

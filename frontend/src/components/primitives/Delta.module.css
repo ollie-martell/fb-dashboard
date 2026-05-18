@@ -1,0 +1,22 @@
+.pill {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 500;
+  padding: 2px 8px 3px;
+  border-radius: var(--radius-pill);
+  letter-spacing: var(--tracking-mono);
+  line-height: 1;
+}
+
+.positive {
+  /* accent-green (#5BAE6B) at 8% alpha */
+  background: rgba(91, 174, 107, 0.08);
+  color: var(--accent-green-dark);
+}
+
+.negative {
+  /* accent-coral (#F25C3D) at 8% alpha */
+  background: rgba(242, 92, 61, 0.08);
+  color: var(--accent-coral);
+}
