@@ -1,7 +1,7 @@
 import type { CSSProperties, ReactNode } from 'react'
 import styles from './Card.module.css'
 
-type CardVariant = 'white' | 'yellow' | 'dark'
+type CardVariant = 'white' | 'yellow' | 'blue' | 'dark'
 
 interface CardProps {
   variant?: CardVariant

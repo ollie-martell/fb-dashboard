@@ -14,4 +14,5 @@
 
 .white  { background: var(--bg-card-white);  color: var(--text-primary);   }
 .yellow { background: var(--bg-card-yellow); color: var(--text-on-yellow); }
+.blue   { background: var(--accent-blue);    color: var(--text-on-dark);   }
 .dark   { background: var(--bg-card-dark);   color: var(--text-on-dark);   }

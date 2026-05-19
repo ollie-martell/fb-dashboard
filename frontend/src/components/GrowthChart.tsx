@@ -89,7 +89,10 @@ export default function GrowthChart({ data, animate, compact }: GrowthChartProps
               const bh = Math.max(2, innerH - (yScale!(d.newFollowers) ?? 0))
               const x = offsetX + i * (barW + gap)
               const y = innerH - bh
-              const fill = isLast ? 'var(--accent-yellow-strong)' : 'var(--accent-yellow)'
+              const ig = platform === 'instagram'
+              const fill = isLast
+                ? (ig ? 'var(--accent-blue-strong)' : 'var(--accent-yellow-strong)')
+                : (ig ? 'var(--accent-blue)' : 'var(--accent-yellow)')
 
               // Tooltip hit area: extend slightly above/below the visible bar
               const hitX = PAD.left + x - gap / 2

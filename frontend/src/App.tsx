@@ -187,7 +187,7 @@ function RangeToggle({
   )
 }
 
-function MtdMiddle({ pctToTarget, target }: { pctToTarget: number; target: number }) {
+function MtdMiddle({ pctToTarget, target, platform }: { pctToTarget: number; target: number; platform: Platform }) {
   return (
     <>
       <div
@@ -226,9 +226,9 @@ function MtdMiddle({ pctToTarget, target }: { pctToTarget: number; target: numbe
           style={{
             height: '100%',
             width: `${Math.max(0, Math.min(100, pctToTarget))}%`,
-            background: 'var(--accent-yellow)',
+            background: platform === 'instagram' ? 'var(--accent-blue)' : 'var(--accent-yellow)',
             borderRadius: 'var(--radius-pill)',
-            boxShadow: 'var(--shadow-yellow-glow)',
+            boxShadow: platform === 'instagram' ? 'var(--shadow-blue-glow)' : 'var(--shadow-yellow-glow)',
             transition: 'width 400ms var(--ease-out)',
           }}
         />
@@ -392,7 +392,7 @@ function Dashboard() {
         <div style={{ display: 'flex', alignItems: 'center', fontSize: 'var(--text-13)', fontWeight: 500, letterSpacing: '0.04em' }}>
           <img src="/logo.png" alt="Martell Media" height={28} style={{ display: 'block' }} />
           <span style={{ color: 'var(--text-tertiary)', margin: '0 8px' }}>·</span>
-          <span style={{ color: 'var(--text-secondary)' }}>Facebook</span>
+          <span style={{ color: 'var(--text-secondary)' }}>Meta Platforms</span>
         </div>
 
         <div className={styles.headerRight}>
@@ -417,7 +417,7 @@ function Dashboard() {
 
       <div className={styles.cardGrid}>
         <Card
-          variant="yellow"
+          variant={platform === 'instagram' ? 'blue' : 'yellow'}
           className={yesterdayCardClass}
           style={{ visibility: cardVisibility }}
         >
@@ -435,7 +435,7 @@ function Dashboard() {
             countUp={shouldAnimate}
             sub={
               <>
-                <Delta value={formatPercent(wtdDelta)} tone={wtdTone} /> vs prior week
+                <Delta value={formatPercent(wtdDelta)} tone={wtdTone} platform={platform} /> vs prior week
               </>
             }
           />
@@ -450,10 +450,10 @@ function Dashboard() {
             label="Month to date"
             value={mtdValue}
             countUp={shouldAnimate}
-            middle={<MtdMiddle pctToTarget={mtdPct} target={mtdTarget} />}
+            middle={<MtdMiddle pctToTarget={mtdPct} target={mtdTarget} platform={platform} />}
             sub={
               <>
-                <Delta value={formatPercent(mtdPace)} tone={mtdTone} /> {paceLabel}
+                <Delta value={formatPercent(mtdPace)} tone={mtdTone} platform={platform} /> {paceLabel}
                 {projection ? ` · projecting ${projection}` : ''}
               </>
             }
