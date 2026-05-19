@@ -20,7 +20,7 @@ interface TooltipState {
   y: number  // px from top of wrapper
 }
 
-const PAD = { top: 32, right: 4, bottom: 28, left: 4 }
+const PAD = { top: 16, right: 4, bottom: 28, left: 4 }
 
 function formatTooltipDate(iso: string): string {
   return new Date(iso + 'T12:00:00Z').toLocaleDateString('en-GB', {
@@ -64,6 +64,10 @@ export default function GrowthChart({ data, animate, compact, platform }: Growth
         .range([innerH, 0])
     : null
 
+  const ig = platform === 'instagram'
+  const fillDefault = ig ? 'var(--accent-blue)' : 'var(--accent-yellow)'
+  const fillHover   = ig ? 'var(--accent-blue-strong)' : 'var(--accent-yellow-strong)'
+
   // Month change markers
   const monthMarkers: { index: number; label: string }[] = []
   let lastMonth = ''
@@ -86,26 +90,19 @@ export default function GrowthChart({ data, animate, compact, platform }: Growth
           <g transform={`translate(${PAD.left},${PAD.top})`}>
             {data.map((d, i) => {
               const isLast = i === data.length - 1
+              const isHovered = tooltip?.date === d.date
               const bh = Math.max(2, innerH - (yScale!(d.newFollowers) ?? 0))
               const x = offsetX + i * (barW + gap)
               const y = innerH - bh
-              const ig = platform === 'instagram'
-              const fill = isLast
-                ? (ig ? 'var(--accent-blue-strong)' : 'var(--accent-yellow-strong)')
-                : (ig ? 'var(--accent-blue)' : 'var(--accent-yellow)')
-
-              // Tooltip hit area: extend slightly above/below the visible bar
-              const hitX = PAD.left + x - gap / 2
-              const hitY = PAD.top + y
-              const hitW = barW + gap
 
               return (
                 <g key={d.date}>
                   <rect
-                    x={x} y={y} width={barW} height={bh} rx={3} fill={fill}
+                    x={x} y={y} width={barW} height={bh} rx={3}
+                    fill={isHovered ? fillHover : fillDefault}
                     className={isLast && animate ? 'bar-bounce' : undefined}
                   />
-                  {/* Invisible wider hit area for easier hover */}
+                  {/* Wider hit area for easier hover targeting */}
                   <rect
                     x={x - gap / 2}
                     y={y}
@@ -117,25 +114,12 @@ export default function GrowthChart({ data, animate, compact, platform }: Growth
                       setTooltip({
                         date: d.date,
                         newFollowers: d.newFollowers,
-                        x: hitX + hitW / 2,
-                        y: hitY,
+                        x: PAD.left + x + barW / 2,
+                        y: PAD.top + y,
                       })
                     }
                     onMouseLeave={() => setTooltip(null)}
                   />
-                  {isLast && (
-                    <text
-                      x={x + barW / 2}
-                      y={y - 10}
-                      textAnchor="middle"
-                      fill="var(--text-primary)"
-                      fontFamily="'Bricolage Grotesque', sans-serif"
-                      fontSize={12}
-                      fontWeight={600}
-                    >
-                      {d.newFollowers.toLocaleString('en-US')}
-                    </text>
-                  )}
                 </g>
               )
             })}
