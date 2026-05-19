@@ -11,7 +11,9 @@ import Stat from './components/primitives/Stat'
 import {
   ApiError,
   getFollowers,
+  getInstagram,
   refreshFollowers,
+  refreshInstagram,
   type FollowersResponse,
 } from './lib/api'
 
@@ -235,19 +237,21 @@ function MtdMiddle({ pctToTarget, target }: { pctToTarget: number; target: numbe
   )
 }
 
-function RefreshButton() {
+function RefreshButton({ platform }: { platform: Platform }) {
   const queryClient = useQueryClient()
   const [flashSuccess, setFlashSuccess] = useState(false)
 
-  const mutation = useMutation({
-    mutationFn: refreshFollowers,
-    onSuccess: (data) => {
-      queryClient.setQueryData(['followers'], data)
-      queryClient.invalidateQueries({ queryKey: ['followers'] })
-      setFlashSuccess(true)
-      window.setTimeout(() => setFlashSuccess(false), 500)
-    },
-  })
+  const onSuccess = (data: FollowersResponse) => {
+    const key = platform === 'facebook' ? ['followers'] : ['instagram']
+    queryClient.setQueryData(key, data)
+    queryClient.invalidateQueries({ queryKey: key })
+    setFlashSuccess(true)
+    window.setTimeout(() => setFlashSuccess(false), 500)
+  }
+
+  const fbMutation = useMutation({ mutationFn: refreshFollowers, onSuccess })
+  const igMutation = useMutation({ mutationFn: refreshInstagram, onSuccess })
+  const mutation = platform === 'facebook' ? fbMutation : igMutation
 
   return (
     <button
@@ -300,18 +304,30 @@ function Dashboard() {
   const [range, setRange] = useState<Range>('45D')
   const compact = useCompact()
 
-  const query = useQuery<FollowersResponse, ApiError>({
+  const fbQuery = useQuery<FollowersResponse, ApiError>({
     queryKey: ['followers'],
     queryFn: getFollowers,
   })
 
+  const igQuery = useQuery<FollowersResponse, ApiError>({
+    queryKey: ['instagram'],
+    queryFn: getInstagram,
+  })
+
+  const query = platform === 'facebook' ? fbQuery : igQuery
   const data = query.data
   const hasData = !!data
   const shouldAnimate = useShouldAnimate(hasData)
 
-  // Pulse the yellow card shadow when yesterday's value changes after a refresh
+  // Pulse the yellow card shadow when yesterday's value changes after a refresh.
+  // Reset the ref when switching platforms to avoid a false pulse.
   const [pulseShadow, setPulseShadow] = useState(false)
   const prevYesterdayRef = useRef<number | null>(null)
+
+  useEffect(() => {
+    prevYesterdayRef.current = null
+  }, [platform])
+
   useEffect(() => {
     if (!data) return
     const val = data.topline.yesterday.value
@@ -341,7 +357,6 @@ function Dashboard() {
 
   const cardVisibility = hasData ? 'visible' : 'hidden'
 
-  // Stat values (use placeholders while loading; cards are hidden via visibility)
   const yesterdayValue = data ? formatSigned(data.topline.yesterday.value) : '+0'
   const yesterdaySub = data ? formatYesterdayDate(data.topline.yesterday.date) : ''
 
@@ -350,7 +365,7 @@ function Dashboard() {
   const wtdTone: 'positive' | 'negative' = wtdDelta >= 0 ? 'positive' : 'negative'
 
   const mtdValue = data ? formatSigned(data.topline.mtd.value) : '+0'
-  const mtdTarget = data?.topline.mtd.target ?? 168000
+  const mtdTarget = data?.topline.mtd.target ?? 0
   const mtdPct = data?.topline.mtd.pct_to_target ?? 0
   const mtdPace = data?.topline.mtd.pace_delta_pct ?? 0
   const mtdTone: 'positive' | 'negative' = mtdPace >= 0 ? 'positive' : 'negative'
@@ -392,7 +407,7 @@ function Dashboard() {
             Updated {asOf}
             {fetchedAt ? ` · ${fetchedAt}` : ''}
           </span>
-          <RefreshButton />
+          <RefreshButton platform={platform} />
         </div>
       </header>
 

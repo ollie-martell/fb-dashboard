@@ -78,3 +78,11 @@ export function getFollowers(): Promise<FollowersResponse> {
 export function refreshFollowers(): Promise<FollowersResponse> {
   return request('/api/refresh', { method: 'POST' })
 }
+
+export function getInstagram(): Promise<FollowersResponse> {
+  return request('/api/instagram')
+}
+
+export function refreshInstagram(): Promise<FollowersResponse> {
+  return request('/api/instagram/refresh', { method: 'POST' })
+}
