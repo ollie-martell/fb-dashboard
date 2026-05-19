@@ -94,7 +94,6 @@ export default function GrowthChart({ data, animate, compact }: GrowthChartProps
               const hitX = PAD.left + x - gap / 2
               const hitY = PAD.top + y
               const hitW = barW + gap
-              const hitH = bh
 
               return (
                 <g key={d.date}>
