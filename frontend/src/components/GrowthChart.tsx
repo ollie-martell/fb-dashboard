@@ -30,7 +30,7 @@ function formatTooltipDate(iso: string): string {
   })
 }
 
-export default function GrowthChart({ data, animate, compact }: GrowthChartProps) {
+export default function GrowthChart({ data, animate, compact, platform }: GrowthChartProps) {
   const wrapperRef = useRef<HTMLDivElement>(null)
   const [dims, setDims] = useState({ width: 0, height: 0 })
   const [tooltip, setTooltip] = useState<TooltipState | null>(null)
