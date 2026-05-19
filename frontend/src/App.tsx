@@ -16,6 +16,7 @@ import {
 } from './lib/api'
 
 type Range = '30D' | '45D' | 'All'
+type Platform = 'facebook' | 'instagram'
 
 function RefreshIcon() {
   return (
@@ -93,6 +94,51 @@ function formatTime(ts: number): string {
     minute: '2-digit',
     hour12: false,
   })
+}
+
+function PlatformToggle({
+  value,
+  onChange,
+}: {
+  value: Platform
+  onChange: (p: Platform) => void
+}) {
+  return (
+    <div
+      style={{
+        display: 'inline-flex',
+        gap: 'var(--space-1)',
+        background: 'var(--bg-subtle)',
+        padding: '3px',
+        borderRadius: 'var(--radius-pill)',
+      }}
+    >
+      {(['facebook', 'instagram'] as const).map((p) => {
+        const active = p === value
+        const label = p === 'facebook' ? 'Facebook' : 'Instagram'
+        return (
+          <button
+            key={p}
+            onClick={() => onChange(p)}
+            style={{
+              background: active ? 'var(--bg-card-white)' : 'transparent',
+              border: 'none',
+              color: active ? 'var(--text-primary)' : 'var(--text-secondary)',
+              padding: '7px 14px',
+              fontFamily: 'var(--font-body)',
+              fontSize: 'var(--text-sm)',
+              fontWeight: 500,
+              cursor: 'pointer',
+              borderRadius: 'var(--radius-pill)',
+              boxShadow: active ? 'var(--shadow-card)' : 'none',
+            }}
+          >
+            {label}
+          </button>
+        )
+      })}
+    </div>
+  )
 }
 
 function RangeToggle({
@@ -250,6 +296,7 @@ function RefreshButton() {
 }
 
 function Dashboard() {
+  const [platform, setPlatform] = useState<Platform>('facebook')
   const [range, setRange] = useState<Range>('45D')
   const compact = useCompact()
 
@@ -349,6 +396,10 @@ function Dashboard() {
         </div>
       </header>
 
+      <div style={{ marginBottom: 'clamp(20px, 2.5vw, 28px)' }}>
+        <PlatformToggle value={platform} onChange={setPlatform} />
+      </div>
+
       <div className={styles.cardGrid}>
         <Card
           variant="yellow"
@@ -403,7 +454,7 @@ function Dashboard() {
           title="Daily new followers"
           toggle={<RangeToggle value={range} onChange={setRange} />}
         >
-          <GrowthChart data={chartData} animate={shouldAnimate} compact={compact} />
+          <GrowthChart data={chartData} animate={shouldAnimate} compact={compact} platform={platform} />
         </ChartShell>
       </div>
 

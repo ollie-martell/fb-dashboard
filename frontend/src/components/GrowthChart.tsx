@@ -10,6 +10,7 @@ interface GrowthChartProps {
   data: DayData[]
   animate?: boolean
   compact?: boolean
+  platform?: string
 }
 
 interface TooltipState {
