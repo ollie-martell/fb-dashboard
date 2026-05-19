@@ -21,6 +21,7 @@ class FollowerRow:
 
 
 _cache: dict = {"rows": None, "fetched_at": 0.0}
+_instagram_cache: dict = {"rows": None, "fetched_at": 0.0}
 
 
 def _service():
@@ -112,3 +113,48 @@ def get_rows(force_refresh: bool = False) -> list[FollowerRow]:
         _cache["rows"] = _fetch_rows()
         _cache["fetched_at"] = now
     return _cache["rows"] or []
+
+
+def _fetch_instagram_rows() -> list[FollowerRow]:
+    sheet_id = os.environ["INSTAGRAM_SHEET_ID"]
+    sheet_range = os.environ.get("INSTAGRAM_SHEET_RANGE", DEFAULT_RANGE)
+
+    result = (
+        _service()
+        .spreadsheets()
+        .values()
+        .get(spreadsheetId=sheet_id, range=sheet_range)
+        .execute()
+    )
+
+    values = result.get("values", [])
+    if len(values) < 2:
+        return []
+
+    rows: list[FollowerRow] = []
+    for raw in values[1:]:  # skip header row
+        cells = (list(raw) + ["", "", "", ""])[:4]
+        d = _parse_date(cells[0])
+        if d is None:
+            continue
+        rows.append(
+            FollowerRow(
+                date=d,
+                total_followers=_parse_int(cells[1]),
+                new_followers=_parse_int(cells[2]),
+                growth_rate=_parse_float(cells[3]),
+            )
+        )
+
+    rows.sort(key=lambda r: r.date)
+    return rows
+
+
+def get_instagram_rows(force_refresh: bool = False) -> list[FollowerRow]:
+    now = time.time()
+    cached = _instagram_cache["rows"]
+    fresh = cached is not None and (now - _instagram_cache["fetched_at"]) < CACHE_TTL_SECONDS
+    if force_refresh or not fresh:
+        _instagram_cache["rows"] = _fetch_instagram_rows()
+        _instagram_cache["fetched_at"] = now
+    return _instagram_cache["rows"] or []
